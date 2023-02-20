@@ -29,4 +29,17 @@ public class PlayerController : MonoBehaviour
         // add force to rigid body based on movement vector
         rb.AddForce(movement * speed);
     }
+
+
+    void OnTriggerEnter(Collider other)
+    {
+        // If other object contains pick up tag, delete it from existance
+        if (other.CompareTag("Pickup"))
+        {
+            Destroy(other.gameObject);
+        }
+    }
+
+
+
 }
