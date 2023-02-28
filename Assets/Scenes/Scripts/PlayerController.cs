@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     int totalPickups;
     int pickupcount;
     Timer timer;
+    bool wonGame = false;
 
     [Header("UI")]
     public GameObject winPanel;
@@ -39,6 +40,8 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (wonGame == true)
+            return;
         // get input value from horizontal axis
         float moveHorizontal = Input.GetAxis("Horizontal");
         // get input value from vertical axis
@@ -80,6 +83,7 @@ public class PlayerController : MonoBehaviour
 
 void WinGame()
     {
+        wonGame = true;
         timer.StopTimer();
        // Debug.Log("Dayum Home Slizzle you goshdarn won and stuff! Get Faster Loser- " + timer.GetTime().ToString("F2"));
         //set timer on  text
@@ -88,6 +92,12 @@ void WinGame()
         inGamePanel.SetActive(false);
         //Turn on win panel
         winPanel.SetActive(true);
+    }
+    //TEMP REMOVE WHEN DOING MODULES IN A2
+
+    public void RestartGame()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
     }
 
 
