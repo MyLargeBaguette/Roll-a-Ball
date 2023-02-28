@@ -1,13 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
     Rigidbody rb;
     public float speed = 1;
+    int totalPickups;
     int pickupcount;
     Timer timer;
+
+    [Header("UI")]
+    public GameObject winPanel;
+    public TMP_Text winTime;
+    public GameObject inGamePanel;
+    public TMP_Text timerText;
+    public TMP_Text pickupText;
 
     // Start is called before the first frame update
     void Start()
@@ -15,11 +24,16 @@ public class PlayerController : MonoBehaviour
         //Get the rigid body componant of the game object
       rb = GetComponent<Rigidbody>();
         //get max num of pickups in le scene
+        totalPickups = GameObject.FindGameObjectsWithTag("Pickup").Length;
         pickupcount = GameObject.FindGameObjectsWithTag("Pickup").Length;
         CheckPickups();
         //get timer object + start timer
         timer = FindObjectOfType<Timer>();
         timer.StartTimer();
+        //turn off win panel
+        winPanel.SetActive(false);
+        //turn on wingame panel
+        inGamePanel.SetActive(true);
     }
 
     // Update is called once per frame
@@ -35,6 +49,8 @@ public class PlayerController : MonoBehaviour
 
         // add force to rigid body based on movement vector
         rb.AddForce(movement * speed);
+
+        timerText.text = "You Fast? " + timer.GetTime().ToString("F2");
     }
 
 
@@ -54,8 +70,8 @@ public class PlayerController : MonoBehaviour
 
     void CheckPickups()
     {
-        Debug.Log("Pickups Left: " + pickupcount);
-
+        // Debug.Log("Pickups Left: " + pickupcount);
+        pickupText.text = "Pickup your Game: " + pickupcount + "/" + totalPickups;
         if (pickupcount == 0)
         {
             WinGame();
@@ -65,7 +81,13 @@ public class PlayerController : MonoBehaviour
 void WinGame()
     {
         timer.StopTimer();
-        Debug.Log("Dayum Home Slizzle you goshdarn won and stuff! Get Faster Loser- " + timer.GetTime().ToString("F2"));
+       // Debug.Log("Dayum Home Slizzle you goshdarn won and stuff! Get Faster Loser- " + timer.GetTime().ToString("F2"));
+        //set timer on  text
+        winTime.text = "Get Faster Loser- " + timer.GetTime().ToString("F2");
+        //turnoff ingame panel
+        inGamePanel.SetActive(false);
+        //Turn on win panel
+        winPanel.SetActive(true);
     }
 
 
